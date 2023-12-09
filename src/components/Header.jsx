@@ -10,17 +10,19 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { AUTH_PATH, MAIN_PATH } from "../common/constants";
+import { AUTH_PATH } from "../common/constants";
 import toast from "react-hot-toast";
 import { useMutation } from "@tanstack/react-query";
 import { getMemberInfoRequest, logoutRequest } from "../apis/auth-api";
 import { Button, Stack } from "@mui/material";
+import { useContext } from "react";
+import { MemberContext } from "../context/member-context";
 
 const settings = ["프로필", "프로필 수정", "로그아웃"];
 
 function Header() {
   const navigate = useNavigate();
-  const [currUser, setCurrUser] = useState(null);
+  const { memberInfo, setMemberInfo } = useContext(MemberContext);
   const { pathname } = useLocation();
   const [anchorElUser, setAnchorElUser] = useState(null);
 
@@ -28,7 +30,7 @@ function Header() {
     async function getMemberRequestAsync() {
       try {
         const { data } = await getMemberInfoRequest();
-        setCurrUser(data.data);
+        setMemberInfo(data.data);
       } catch (err) {
         if (err.response.status === 401) {
           console.log("로그인하지 않음");
@@ -46,7 +48,7 @@ function Header() {
       return data;
     },
     onSuccess: (data) => {
-      window.location.reload();
+      navigate(0);
       return toast.success("로그아웃 성공");
     },
     onError: (err) => {
@@ -70,6 +72,7 @@ function Header() {
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography
+            onClick={() => navigate("/")}
             variant="h6"
             noWrap
             component="a"
@@ -88,13 +91,13 @@ function Header() {
           </Typography>
 
           <Box sx={{ ml: "auto" }}>
-            {currUser ? (
+            {memberInfo ? (
               <>
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                     <Avatar
                       alt="profile image"
-                      src={`${process.env.REACT_APP_DOMAIN}/images/${currUser.profileImage}`}
+                      src={`${process.env.REACT_APP_DOMAIN}/images/${memberInfo.profileImage}`}
                     />
                   </IconButton>
                 </Tooltip>

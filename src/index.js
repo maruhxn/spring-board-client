@@ -11,6 +11,7 @@ root.render(
     <Container
       maxWidth="lg"
       sx={{
+        py: "10vh",
         minHeight: "100vh",
         display: "flex",
         alignItems: "center",

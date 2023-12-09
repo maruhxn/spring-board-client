@@ -1,17 +1,12 @@
-import {
-  createDeleteAPI,
-  createGetAPI,
-  createPatchAPI,
-  createPostAPI,
-} from "../libs/utils";
+import { createDeleteAPI, createGetAPI, createPostAPI } from "../libs/utils";
 
 /* Comment API */
 export const COMMENT_BASE_URL = (postId) =>
   `${process.env.REACT_APP_DOMAIN}/posts/${postId}/comments`;
 
-/** TODO: query 추가 */
+/** TODO: sort */
 export const getCommentListRequest = async (postId) => {
-  return await createGetAPI(COMMENT_BASE_URL(postId));
+  return await createGetAPI(`${COMMENT_BASE_URL(postId)}`);
 };
 
 export const createCommentRequest = async (postId, body) => {
