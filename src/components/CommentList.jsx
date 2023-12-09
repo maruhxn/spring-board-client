@@ -8,15 +8,45 @@ import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 import { FILE_BASE_URL } from "../apis/file-api";
 import { getFormattedDate } from "../libs/utils";
-import { Box } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
+import { useContext } from "react";
+import { MemberContext } from "../context/member-context";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { useState } from "react";
+import CommentDeleteModal from "./modals/CommentDeleteModal";
 
-export default function CommentList({ comments }) {
+export default function CommentList({ postId, comments }) {
+  const { memberInfo } = useContext(MemberContext);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   if (!comments) return;
+
   return (
     <List sx={{ width: "100%", bgcolor: "background.paper" }}>
       {comments.map((comment) => (
         <Box key={comment.commentId}>
-          <ListItem alignItems="flex-start">
+          <ListItem
+            alignItems="flex-start"
+            secondaryAction={
+              memberInfo &&
+              memberInfo.memberId === comment.author.memberId && (
+                <>
+                  <IconButton
+                    edge="end"
+                    aria-label="delete"
+                    onClick={() => setIsModalOpen(true)}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                  <CommentDeleteModal
+                    postId={postId}
+                    commentId={comment.commentId}
+                    isOpen={isModalOpen}
+                    setIsOpen={setIsModalOpen}
+                  />
+                </>
+              )
+            }
+          >
             <ListItemAvatar>
               <Avatar
                 alt="프로필 이미지"

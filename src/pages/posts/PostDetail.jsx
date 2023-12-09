@@ -160,7 +160,7 @@ export default function PostDetail() {
         </Card>
         <Divider />
         <CommentInputFields postId={postId} />
-        <CommentList comments={comments} />
+        <CommentList comments={comments} postId={postId} />
       </Stack>
       <PostDeleteModal postId={postId} isOpen={isOpen} setIsOpen={setIsOpen} />
     </>
