@@ -9,8 +9,26 @@ export const createPostAPI = async (url, body) => {
   return await axios.post(url, body, { withCredentials: true });
 };
 
+export const createFormPostAPI = async (url, body) => {
+  return await axios.post(url, body, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+    withCredentials: true,
+  });
+};
+
 export const createPatchAPI = async (url, body) => {
   return await axios.patch(url, body, { withCredentials: true });
+};
+
+export const createFormPatchAPI = async (url, body) => {
+  return await axios.patch(url, body, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+    withCredentials: true,
+  });
 };
 
 export const createPutAPI = async (url, body) => {

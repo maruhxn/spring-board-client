@@ -21,6 +21,7 @@ import { getMemberInfoRequest, logoutRequest } from "../apis/auth-api";
 import { Button, Stack } from "@mui/material";
 import { useContext } from "react";
 import { MemberContext } from "../context/member-context";
+import { FILE_BASE_URL } from "../apis/file-api";
 
 const settings = ["프로필", "로그아웃"];
 
@@ -45,6 +46,7 @@ function Header() {
     getMemberRequestAsync();
   }, []);
 
+  console.log(memberInfo);
   const { mutate: logoutHandler, isLoading } = useMutation({
     mutationFn: async () => {
       const { data } = await logoutRequest();
@@ -52,7 +54,7 @@ function Header() {
       return data;
     },
     onSuccess: (data) => {
-      navigate(0);
+      navigate("/");
       return toast.success("로그아웃 성공");
     },
     onError: (err) => {
@@ -102,7 +104,7 @@ function Header() {
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                     <Avatar
                       alt="profile image"
-                      src={`${process.env.REACT_APP_DOMAIN}/images/${memberInfo.profileImage}`}
+                      src={FILE_BASE_URL(memberInfo.profileImage)}
                     />
                   </IconButton>
                 </Tooltip>

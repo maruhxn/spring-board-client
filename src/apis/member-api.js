@@ -1,5 +1,6 @@
 import {
   createDeleteAPI,
+  createFormPatchAPI,
   createGetAPI,
   createPatchAPI,
   createPostAPI,
@@ -14,7 +15,7 @@ export const getMemberDetailRequest = async (memberId) => {
 };
 
 export const updateMemberProfileRequest = async (memberId, body) => {
-  return await createPatchAPI(MEMBER_BASE_URL(memberId), body);
+  return await createFormPatchAPI(MEMBER_BASE_URL(memberId), body);
 };
 
 export const updatePasswordRequest = async (memberId, body) => {
