@@ -39,7 +39,6 @@ export default function PostDetail() {
   const { memberInfo } = useContext(MemberContext);
   const navigate = useNavigate();
   const [post, setPost] = useState(null);
-  const [comments, setComments] = useState([]);
   const [anchorElOwner, setAnchorElOwner] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -48,20 +47,6 @@ export default function PostDetail() {
       const { data } = await getPostDetailRequest(postId);
       if ((data.code = "OK")) {
         setPost(data.data);
-      }
-    } catch (err) {
-      if (err instanceof AxiosError) {
-        toast.error(err.response.data.message);
-      }
-      toast.error("Server Error!");
-    }
-  };
-
-  const getCommentList = async () => {
-    try {
-      const { data } = await getCommentListRequest(postId);
-      if ((data.code = "OK")) {
-        setComments(data.data.results);
       }
     } catch (err) {
       if (err instanceof AxiosError) {
@@ -86,7 +71,6 @@ export default function PostDetail() {
 
   useEffect(() => {
     getPostDetail();
-    getCommentList();
   }, []);
 
   if (!post) return;
@@ -160,7 +144,7 @@ export default function PostDetail() {
         </Card>
         <Divider />
         <CommentInputFields postId={postId} />
-        <CommentList comments={comments} postId={postId} />
+        <CommentList postId={postId} />
       </Stack>
       <PostDeleteModal postId={postId} isOpen={isOpen} setIsOpen={setIsOpen} />
     </>
