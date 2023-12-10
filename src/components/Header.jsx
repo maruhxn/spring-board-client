@@ -10,7 +10,11 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { AUTH_PATH } from "../common/constants";
+import {
+  AUTH_PATH,
+  MEMBER_DETAIL_PATH,
+  MEMBER_UPDATE_PATH,
+} from "../common/constants";
 import toast from "react-hot-toast";
 import { useMutation } from "@tanstack/react-query";
 import { getMemberInfoRequest, logoutRequest } from "../apis/auth-api";
@@ -18,7 +22,7 @@ import { Button, Stack } from "@mui/material";
 import { useContext } from "react";
 import { MemberContext } from "../context/member-context";
 
-const settings = ["프로필", "프로필 수정", "로그아웃"];
+const settings = ["프로필", "로그아웃"];
 
 function Header() {
   const navigate = useNavigate();
@@ -33,7 +37,7 @@ function Header() {
         setMemberInfo(data.data);
       } catch (err) {
         if (err.response.status === 401) {
-          console.log("로그인하지 않음");
+          return;
         }
       }
     }
@@ -61,6 +65,7 @@ function Header() {
   };
 
   const handleCloseUserMenu = async (setting) => {
+    if (setting === "프로필") navigate(MEMBER_DETAIL_PATH(memberInfo.memberId));
     if (setting === "로그아웃") logoutHandler();
     setAnchorElUser(null);
   };

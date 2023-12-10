@@ -1,6 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
 import MemberDetail from "../pages/members/MemberDetail";
-import MemberUpdate from "../pages/members/MemberUpdate";
 import PasswordUpdate from "../pages/members/PasswordUpdate";
 import PostDetail from "../pages/posts/PostDetail";
 import PostUpdate from "../pages/posts/PostUpdate";
@@ -18,7 +17,6 @@ import {
   MEMBER_CHANGE_PASSWORD_PATH,
   MEMBER_DETAIL_PATH,
   MEMBER_PATH,
-  MEMBER_UPDATE_PATH,
 } from "./constants";
 import Auth from "../pages/auth/Auth";
 
@@ -40,10 +38,6 @@ const router = createBrowserRouter([
           {
             path: MEMBER_DETAIL_PATH(":memberId"),
             element: <MemberDetail />,
-          },
-          {
-            path: MEMBER_UPDATE_PATH(":memberId"),
-            element: <MemberUpdate />,
           },
           {
             path: MEMBER_CHANGE_PASSWORD_PATH(":memberId"),

@@ -54,8 +54,7 @@ export default function CommentList({ postId, comments }) {
               />
             </ListItemAvatar>
             <ListItemText
-              primary={comment.content}
-              secondary={
+              primary={
                 <React.Fragment>
                   <Typography
                     sx={{ display: "inline" }}
@@ -63,9 +62,28 @@ export default function CommentList({ postId, comments }) {
                     variant="body2"
                     color="text.primary"
                   >
-                    {comment.author.username}
+                    {`${comment.author.username}`}
                   </Typography>
-                  {` - ${getFormattedDate(comment.createdAt)}`}
+                  <Typography
+                    sx={{ display: "inline" }}
+                    component="span"
+                    variant="caption"
+                    color="GrayText"
+                  >
+                    {` - ${getFormattedDate(comment.createdAt)}`}
+                  </Typography>
+                </React.Fragment>
+              }
+              secondary={
+                <React.Fragment>
+                  <Typography
+                    sx={{ display: "inline" }}
+                    component="span"
+                    variant="body1"
+                    color="text.primary"
+                  >
+                    {comment.content}
+                  </Typography>
                 </React.Fragment>
               }
             />
