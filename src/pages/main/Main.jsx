@@ -32,12 +32,14 @@ export default function Main() {
   const [searchParams] = useSearchParams();
   const [posts, setPosts] = useState([]);
   const [totalPage, setTotalPage] = useState(0);
-  const [currPage, setCurrPage] = useState(searchParams.get("page") ?? 0);
+  const [currPage, setCurrPage] = useState(
+    searchParams.get("page") ? +searchParams.get("page") : 1
+  );
 
   useEffect(() => {
     const getPostList = async () => {
       try {
-        const { data } = await getPostListRequest(0, {});
+        const { data } = await getPostListRequest(currPage - 1, {});
         setPosts(data.data.results);
         setTotalPage(data.data.totalPage);
       } catch (err) {

@@ -50,8 +50,6 @@ export default function MemberDetail() {
     }
   };
 
-  console.log(memberDetail);
-
   useEffect(() => {
     if (memberInfo && memberInfo.memberId !== +memberId) {
       navigate("/");

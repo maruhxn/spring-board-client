@@ -14,6 +14,7 @@ import {
   AUTH_PATH,
   MEMBER_DETAIL_PATH,
   MEMBER_UPDATE_PATH,
+  POST_CREATE_PATH,
 } from "../common/constants";
 import toast from "react-hot-toast";
 import { useMutation } from "@tanstack/react-query";
@@ -46,7 +47,6 @@ function Header() {
     getMemberRequestAsync();
   }, []);
 
-  console.log(memberInfo);
   const { mutate: logoutHandler, isLoading } = useMutation({
     mutationFn: async () => {
       const { data } = await logoutRequest();
@@ -54,7 +54,7 @@ function Header() {
       return data;
     },
     onSuccess: (data) => {
-      navigate("/");
+      pathname === "/" ? navigate(0) : navigate("/");
       return toast.success("로그아웃 성공");
     },
     onError: (err) => {
@@ -83,7 +83,6 @@ function Header() {
             variant="h6"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
             sx={{
               mr: 2,
               display: { xs: "flex" },
@@ -99,7 +98,14 @@ function Header() {
 
           <Box sx={{ ml: "auto" }}>
             {memberInfo ? (
-              <>
+              <Stack direction="row" spacing={2}>
+                <Button
+                  variant="contained"
+                  onClick={() => navigate(POST_CREATE_PATH())}
+                  color="success"
+                >
+                  게시글 작성
+                </Button>
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                     <Avatar
@@ -134,7 +140,7 @@ function Header() {
                     </MenuItem>
                   ))}
                 </Menu>
-              </>
+              </Stack>
             ) : (
               <Stack spacing={2} direction="row">
                 <Button

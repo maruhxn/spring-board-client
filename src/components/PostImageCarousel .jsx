@@ -10,8 +10,6 @@ function PostImageCarousel({ postImages }) {
       <Carousel
         sx={{
           textAlign: "center",
-          minHeight: 300,
-          height: "100%",
         }}
       >
         {postImages.map((image, i) => (
@@ -19,9 +17,7 @@ function PostImageCarousel({ postImages }) {
             key={i}
             src={`${FILE_BASE_URL(image.storedName)}`}
             alt={image.originalName}
-            style={{
-              height: "100%",
-            }}
+            style={{ height: 300, objectFit: "contain" }}
           />
         ))}
       </Carousel>
