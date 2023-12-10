@@ -29,6 +29,11 @@ export const getPostDetailRequest = async (postId) => {
 export const updatePostRequest = async (postId, body) => {
   return await createPatchAPI(`${POST_BASE_URL}/${postId}`, body);
 };
+
 export const deletePostRequest = async (postId) => {
   return await createDeleteAPI(`${POST_BASE_URL}/${postId}`);
+};
+
+export const deleteImageRequest = async (postId, imageId) => {
+  return await createDeleteAPI(`${POST_BASE_URL}/${postId}/images/${imageId}`);
 };

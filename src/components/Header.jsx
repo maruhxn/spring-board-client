@@ -13,7 +13,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import {
   AUTH_PATH,
   MEMBER_DETAIL_PATH,
-  MEMBER_UPDATE_PATH,
   POST_CREATE_PATH,
 } from "../common/constants";
 import toast from "react-hot-toast";
@@ -91,6 +90,7 @@ function Header() {
               letterSpacing: ".3rem",
               color: "inherit",
               textDecoration: "none",
+              cursor: "pointer",
             }}
           >
             SPRING BOARD

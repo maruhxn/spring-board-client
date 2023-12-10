@@ -14,7 +14,7 @@ function PostImageCarousel({ postImages }) {
       >
         {postImages.map((image, i) => (
           <img
-            key={i}
+            key={image.imageId}
             src={`${FILE_BASE_URL(image.storedName)}`}
             alt={image.originalName}
             style={{ height: 300, objectFit: "contain" }}
