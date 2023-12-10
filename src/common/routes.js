@@ -8,7 +8,7 @@ import Main from "../pages/main/Main";
 import Layout from "../layouts/Layout";
 import NotFound from "../pages/NotFound";
 import {
-  AUTH_PATH,
+  REGISTER_PATH,
   MAIN_PATH,
   POST_CREATE_PATH,
   POST_DETAIL_PATH,
@@ -19,6 +19,7 @@ import {
   MEMBER_PATH,
 } from "./constants";
 import Auth from "../pages/auth/Auth";
+import ProtectedRoute from "../layouts/ProtectedRoute";
 
 const router = createBrowserRouter([
   {
@@ -29,11 +30,12 @@ const router = createBrowserRouter([
         element: <Main />,
       },
       {
-        path: AUTH_PATH(),
+        path: REGISTER_PATH(),
         element: <Auth />,
       },
       {
         path: MEMBER_PATH(),
+        element: <ProtectedRoute />,
         children: [
           {
             path: MEMBER_DETAIL_PATH(":memberId"),
@@ -50,7 +52,13 @@ const router = createBrowserRouter([
         children: [
           {
             path: POST_CREATE_PATH(),
-            element: <PostCreate />,
+            element: <ProtectedRoute />,
+            children: [
+              {
+                path: POST_CREATE_PATH(),
+                element: <PostCreate />,
+              },
+            ],
           },
           {
             path: POST_DETAIL_PATH(":postId"),
@@ -58,7 +66,13 @@ const router = createBrowserRouter([
           },
           {
             path: POST_UPDATE_PATH(":postId"),
-            element: <PostUpdate />,
+            element: <ProtectedRoute />,
+            children: [
+              {
+                path: POST_UPDATE_PATH(":postId"),
+                element: <PostUpdate />,
+              },
+            ],
           },
         ],
       },

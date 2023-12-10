@@ -1,18 +1,18 @@
-import { useContext } from "react";
 import { Avatar, ListItem, ListItemAvatar, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { createCommentRequest } from "../apis/comment-api";
 import { FILE_BASE_URL } from "../apis/file-api";
-import { MemberContext } from "../context/member-context";
 import toast from "react-hot-toast";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
+import { MemberInfoAtom } from "../atoms/MemberInfoAtom";
+import { useRecoilValue } from "recoil";
 
 export default function CommentInputFields({ postId }) {
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
-  const { memberInfo } = useContext(MemberContext);
+  const memberInfo = useRecoilValue(MemberInfoAtom);
 
   const { mutate: createComment, isLoading } = useMutation({
     mutationFn: async ({ content }) => {

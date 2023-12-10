@@ -9,8 +9,6 @@ import Typography from "@mui/material/Typography";
 import { FILE_BASE_URL } from "../apis/file-api";
 import { getFormattedDate } from "../libs/utils";
 import { Box, IconButton, Pagination } from "@mui/material";
-import { useContext } from "react";
-import { MemberContext } from "../context/member-context";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useState } from "react";
 import CommentDeleteModal from "./modals/CommentDeleteModal";
@@ -19,9 +17,11 @@ import { getCommentListRequest } from "../apis/comment-api";
 import toast from "react-hot-toast";
 import { useEffect } from "react";
 import { AxiosError } from "axios";
+import { useRecoilValue } from "recoil";
+import { MemberInfoAtom } from "../atoms/MemberInfoAtom";
 
 export default function CommentList({ postId }) {
-  const { memberInfo } = useContext(MemberContext);
+  const memberInfo = useRecoilValue(MemberInfoAtom);
   const [searchParams] = useSearchParams();
   const [comments, setComments] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);

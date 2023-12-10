@@ -14,8 +14,7 @@ import {
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import { MEMBER_CHANGE_PASSWORD_PATH } from "../../common/constants";
 import { useNavigate, useParams } from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
-import { MemberContext } from "../../context/member-context";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { FILE_BASE_URL } from "../../apis/file-api";
 import { useForm } from "react-hook-form";
@@ -25,11 +24,13 @@ import {
   updateMemberProfileRequest,
 } from "../../apis/member-api";
 import { AxiosError } from "axios";
+import { useRecoilValue } from "recoil";
+import { MemberInfoAtom } from "../../atoms/MemberInfoAtom";
 
 export default function MemberDetail() {
   const { register, handleSubmit, watch } = useForm();
   const { memberId } = useParams();
-  const { memberInfo } = useContext(MemberContext);
+  const memberInfo = useRecoilValue(MemberInfoAtom);
   const navigate = useNavigate();
   const [memberDetail, setMemberDetail] = useState(null);
   const [avatarPreview, setAvatarPreview] = useState("");
@@ -44,18 +45,14 @@ export default function MemberDetail() {
       }
     } catch (err) {
       if (err instanceof AxiosError) {
-        toast.error(err.response.data.message);
+        navigate("/", { replace: true });
+        return toast.error(err.response.data.message);
       }
       toast.error("Server Error!");
     }
   };
 
   useEffect(() => {
-    if (memberInfo && memberInfo.memberId !== +memberId) {
-      navigate("/");
-      toast.error("권한이 없습니다.");
-      return;
-    }
     getMemberDetail();
   }, [memberInfo]);
 

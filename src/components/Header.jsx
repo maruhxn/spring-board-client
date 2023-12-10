@@ -11,7 +11,7 @@ import MenuItem from "@mui/material/MenuItem";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
-  AUTH_PATH,
+  REGISTER_PATH,
   MEMBER_DETAIL_PATH,
   POST_CREATE_PATH,
 } from "../common/constants";
@@ -19,32 +19,17 @@ import toast from "react-hot-toast";
 import { useMutation } from "@tanstack/react-query";
 import { getMemberInfoRequest, logoutRequest } from "../apis/auth-api";
 import { Button, Stack } from "@mui/material";
-import { useContext } from "react";
-import { MemberContext } from "../context/member-context";
 import { FILE_BASE_URL } from "../apis/file-api";
+import { useRecoilState } from "recoil";
+import { MemberInfoAtom } from "../atoms/MemberInfoAtom";
 
 const settings = ["프로필", "로그아웃"];
 
 function Header() {
   const navigate = useNavigate();
-  const { memberInfo, setMemberInfo } = useContext(MemberContext);
+  const [memberInfo, setMemberInfo] = useRecoilState(MemberInfoAtom);
   const { pathname } = useLocation();
   const [anchorElUser, setAnchorElUser] = useState(null);
-
-  useEffect(() => {
-    async function getMemberRequestAsync() {
-      try {
-        const { data } = await getMemberInfoRequest();
-        setMemberInfo(data.data);
-      } catch (err) {
-        if (err.response.status === 401) {
-          return;
-        }
-      }
-    }
-
-    getMemberRequestAsync();
-  }, []);
 
   const { mutate: logoutHandler, isLoading } = useMutation({
     mutationFn: async () => {
@@ -53,6 +38,7 @@ function Header() {
       return data;
     },
     onSuccess: (data) => {
+      setMemberInfo(null);
       pathname === "/" ? navigate(0) : navigate("/");
       return toast.success("로그아웃 성공");
     },
@@ -71,7 +57,7 @@ function Header() {
     setAnchorElUser(null);
   };
 
-  if (pathname === AUTH_PATH()) return null;
+  if (pathname === REGISTER_PATH()) return null;
 
   return (
     <AppBar position="fixed">

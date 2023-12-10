@@ -27,14 +27,17 @@ import toast from "react-hot-toast";
 import { AxiosError } from "axios";
 import { FILE_BASE_URL } from "../../apis/file-api";
 import { POST_DETAIL_PATH } from "../../common/constants";
+import { useRecoilValue } from "recoil";
+import { MemberInfoAtom } from "../../atoms/MemberInfoAtom";
 
 const PostUpdate = () => {
   const navigate = useNavigate();
   const { postId } = useParams();
+  const memberInfo = useRecoilValue(MemberInfoAtom);
   const { register, handleSubmit, watch, setValue } = useForm();
   const [previewImages, setPreviewImages] = useState([]);
   const [postImages, setPostImages] = useState([]);
-  const [postDetail, setPostDetail] = useState([]);
+  const [postDetail, setPostDetail] = useState(null);
   const addedImages = watch("images");
 
   const getPostDetail = async () => {
@@ -54,6 +57,14 @@ const PostUpdate = () => {
   useEffect(() => {
     getPostDetail();
   }, []);
+
+  // 권한 체크
+  useEffect(() => {
+    if (postDetail && memberInfo.memberId !== postDetail.author?.memberId) {
+      navigate("/", { replace: true });
+      toast.error("권한이 없습니다.");
+    }
+  }, [postDetail]);
 
   useEffect(() => {
     if (postDetail?.title) setValue("title", postDetail.title);

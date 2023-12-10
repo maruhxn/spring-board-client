@@ -1,5 +1,6 @@
 export const MAIN_PATH = () => "/";
-export const AUTH_PATH = () => "/auth";
+export const REGISTER_PATH = () => "/auth";
+export const LOGIN_PATH = () => "/auth?type=login";
 export const MEMBER_PATH = () => "/members";
 export const MEMBER_DETAIL_PATH = (memberId) => `/members/detail/${memberId}`;
 export const MEMBER_CHANGE_PASSWORD_PATH = (memberId) =>

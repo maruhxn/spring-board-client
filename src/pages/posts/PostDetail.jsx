@@ -24,19 +24,18 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import { FILE_BASE_URL } from "../../apis/file-api";
 import { getFormattedDate } from "../../libs/utils";
 import CommentList from "../../components/CommentList";
-import { getCommentListRequest } from "../../apis/comment-api";
 import CommentInputFields from "../../components/CommentInputFields";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { POST_UPDATE_PATH } from "../../common/constants";
 import PostDeleteModal from "../../components/modals/PostDeleteModal";
-import { useContext } from "react";
-import { MemberContext } from "../../context/member-context";
+import { useRecoilValue } from "recoil";
+import { MemberInfoAtom } from "../../atoms/MemberInfoAtom";
 
 const jobs = ["게시글 수정", "게시글 삭제"];
 
 export default function PostDetail() {
   const { postId } = useParams();
-  const { memberInfo } = useContext(MemberContext);
+  const memberInfo = useRecoilValue(MemberInfoAtom);
   const navigate = useNavigate();
   const [post, setPost] = useState(null);
   const [anchorElOwner, setAnchorElOwner] = useState(null);

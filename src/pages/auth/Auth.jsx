@@ -13,8 +13,8 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import toast from "react-hot-toast";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { AUTH_PATH, MAIN_PATH } from "../../common/constants";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { LOGIN_PATH } from "../../common/constants";
 import { useState } from "react";
 import { loginRequest, registerRequest } from "../../apis/auth-api";
 
@@ -39,14 +39,13 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function Auth() {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location?.state?.redirectedFrom?.pathname || "/";
+  const [searchParams] = useSearchParams();
   const authType = searchParams.get("type");
-  const [isLoginType, setisLoginType] = useState(authType === "login");
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+  const [isLoginType] = useState(authType === "login");
+  const { register, handleSubmit } = useForm();
 
   const { mutate: registerHandler, isLoading: isRegisterLoading } = useMutation(
     {
@@ -61,7 +60,7 @@ export default function Auth() {
         return data;
       },
       onSuccess: (data) => {
-        window.location.replace(AUTH_PATH() + "?type=login");
+        navigate(LOGIN_PATH(), { replace: true });
         return toast.success("회원가입 성공");
       },
       onError: (err) => {
@@ -85,8 +84,8 @@ export default function Auth() {
 
       return data;
     },
-    onSuccess: (data) => {
-      window.location.replace(MAIN_PATH());
+    onSuccess: () => {
+      navigate(from, { replace: true });
       return toast.success("로그인 성공");
     },
     onError: (err) => {
@@ -186,7 +185,7 @@ export default function Auth() {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="/auth/login" variant="body2">
+                <Link href={LOGIN_PATH()} variant="body2">
                   {isLoginType
                     ? "계정이 없습니까? 회원가입"
                     : "이미 계정이 있습니까? 로그인"}

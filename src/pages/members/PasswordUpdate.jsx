@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import {
   confirmPasswordRequest,
@@ -19,12 +19,22 @@ import toast from "react-hot-toast";
 import { AxiosError } from "axios";
 import { useState } from "react";
 import { MEMBER_DETAIL_PATH } from "../../common/constants";
+import { useRecoilValue } from "recoil";
+import { MemberInfoAtom } from "../../atoms/MemberInfoAtom";
 
 const PasswordUpdate = () => {
   const navigate = useNavigate();
   const { memberId } = useParams();
+  const memberInfo = useRecoilValue(MemberInfoAtom);
   const [isConfirmed, setIsConfirmed] = useState(false);
   const { register, handleSubmit } = useForm();
+
+  useEffect(() => {
+    if (memberInfo.memberId !== memberId) {
+      navigate("/", { replace: true });
+      toast.error("권한이 없습니다");
+    }
+  }, []);
 
   const { mutate: confirmPassword, isLoading: confirmPasswordLoading } =
     useMutation({
